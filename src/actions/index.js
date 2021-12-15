@@ -11,6 +11,20 @@ export const heroesFetched = (heroes) => {
     }
 }
 
+export const heroDelete = (heroesWithoutOneHero) => {
+    return {
+        type: 'HERO_DELETE',
+        newHeroes: heroesWithoutOneHero
+    }
+}
+
+export const heroAdd = (newHero) => {
+    return {
+        type: 'HERO_ADD',
+        newHero: newHero
+    }
+}
+
 export const heroesFetchingError = () => {
     return {
         type: 'HEROES_FETCHING_ERROR'
