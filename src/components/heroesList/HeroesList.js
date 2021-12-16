@@ -50,6 +50,7 @@ const HeroesList = () => {
     }
 
     const elements = renderHeroesList(heroes);
+
     return (
         <ul>
             {elements}

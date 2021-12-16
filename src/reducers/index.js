@@ -26,7 +26,7 @@ const reducer = (state = initialState, action) => {
         case 'HERO_ADD':
             return {
                 ...state,
-                heroes: state.heroes.push(action.newHero),
+                heroes: [...state.heroes, action.newHero],
                 heroesLoadingStatus: 'idle'
             }
         case 'HEROES_FETCHING_ERROR':
