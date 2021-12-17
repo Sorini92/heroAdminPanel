@@ -97,7 +97,7 @@ const HeroesAddForm = () => {
                     name="element"
                     value={element} 
                     onChange={(e) => setElement(e.target.value)}>
-                    <option >Я владею элементом...</option>
+                    <option value=''>Я владею элементом...</option>
                     {options}
                 </select>
             </div>

@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
+import { chosenActiveFilter } from '../../actions';
 import {useHttp} from '../../hooks/http.hook';
+
 // Задача для этого компонента:
 // Фильтры должны формироваться на основании загруженных данных
 // Фильтры должны отображать только нужных героев при выборе
@@ -12,6 +15,7 @@ const HeroesFilters = () => {
 
     const [filters, setFilters] = useState([]);
     const [activeFilter, setActiveFilter] = useState('all');
+    const dispatch = useDispatch();
 
     const {request} = useHttp();
 
@@ -21,28 +25,16 @@ const HeroesFilters = () => {
         // eslint-disable-next-line
     }, []);
 
-    const filtering = (items, filter) => {
-        switch (filter) {
-            case 'all': 
-                return items
-            case 'fire': 
-                return items.filter(item => item.element)
-            case 'water': 
-                return items.filter(item => item.element)
-            case 'wind': 
-                return items.filter(item => item.element)
-            case 'earth': 
-                return items.filter(item => item.element)
-            default: 
-                return items
-        }
+    const handler = (filter) => {
+        setActiveFilter(filter)
+        dispatch(chosenActiveFilter(filter))
     }
 
     const renderButtons = (arr) => {
         return arr.map((item, i) => {
             const active = activeFilter === item.name;
             const clazz = active ? 'btn active' : 'btn';
-            return <button onClick={() => setActiveFilter(item.name)} key={i} className={`${clazz} ${item.className}`}>{item.label}</button>
+            return <button onClick={() => handler(item.name)} key={i} className={`${clazz} ${item.className}`}>{item.label}</button>
         })
     }
 

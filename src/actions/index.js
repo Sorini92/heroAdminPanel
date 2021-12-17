@@ -25,10 +25,10 @@ export const heroAdd = (newHero) => {
     }
 }
 
-export const heroFiltering = (heroes) => {
+export const chosenActiveFilter = (activeFilter) => {
     return {
-        type: 'HERO_FILTERING',
-        payload: heroes
+        type: 'HERO_ACTIVEFILTER',
+        activeFilter: activeFilter
     }
 }
 
