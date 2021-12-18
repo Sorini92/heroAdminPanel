@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { chosenActiveFilter } from '../../actions';
+import { chosenActiveFilter, filtersFetching, filtersFetched, filtersFetchingError } from '../../actions';
 import {useHttp} from '../../hooks/http.hook';
+import Spinner from '../spinner/Spinner';
 
 // Задача для этого компонента:
 // Фильтры должны формироваться на основании загруженных данных
@@ -13,17 +14,25 @@ import {useHttp} from '../../hooks/http.hook';
 
 const HeroesFilters = () => {
 
-    const [filters, setFilters] = useState([]);
+    const {filters, filtersLoadingStatus} = useSelector(state => state);
     const [activeFilter, setActiveFilter] = useState('all');
     const dispatch = useDispatch();
 
     const {request} = useHttp();
 
     useEffect(() => {
+        dispatch(filtersFetching());
         request("http://localhost:3001/filters")
-            .then(data => setFilters(data))
+            .then(data => dispatch(filtersFetched(data)))
+            .catch(() => dispatch(filtersFetchingError()))
         // eslint-disable-next-line
     }, []);
+
+    if (filtersLoadingStatus === "loading") {
+        return <Spinner/>;
+    } else if (filtersLoadingStatus === "error") {
+        return <h5 className="text-center mt-5">Ошибка загрузки</h5>
+    }
 
     const handler = (filter) => {
         setActiveFilter(filter)

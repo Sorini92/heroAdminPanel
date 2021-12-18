@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import { useDispatch } from 'react-redux';
-import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
 import {useHttp} from '../../hooks/http.hook';
 
 import { heroAdd } from '../../actions';
@@ -17,19 +17,13 @@ import { heroAdd } from '../../actions';
 
 const HeroesAddForm = () => {
 
+    const {filters, filtersLoadingStatus} = useSelector(state => state);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
     const [name, setName] = useState('');
     const [text, setText] = useState('');
     const [element, setElement] = useState('Я владею элементом...');
-    const [filters, setFilters] = useState([]);
-
-    useEffect(() => {
-        request("http://localhost:3001/filters")
-            .then(data => setFilters(data))
-        // eslint-disable-next-line
-    }, []);
 
     const addNewHero = (e) => {
         e.preventDefault();
@@ -51,14 +45,20 @@ const HeroesAddForm = () => {
         setElement('Я владею элементом...')
     }
     
-    const renderOptions = (arr) => {
-        const newArr = arr.slice(1, 5);
+    const renderOptions = (filters, status) => {
+        if (status === "loading") {
+            return <option>Загрузка элементов</option>
+        } else if (status === "error") {
+            return <option>Ошибка загрузки</option>
+        }
+
+        const newArr = filters.slice(1, 5);
         return newArr.map((item, i) => {
             return <option key={i} value={item.name}>{item.label}</option>
         })
     }
 
-    const options = renderOptions(filters);
+    const options = renderOptions(filters, filtersLoadingStatus);
 
     return (
         <form className="border p-4 shadow-lg rounded" onSubmit={addNewHero}>

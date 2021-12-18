@@ -41,17 +41,10 @@ const HeroesList = () => {
     }
 
     const filteredData = (items, filter) => {
-        switch (filter) {
-            case 'fire': 
-                return items.filter(item => item.element === 'fire')
-            case 'water': 
-                return items.filter(item => item.element === 'water')
-            case 'wind': 
-                return items.filter(item => item.element === 'wind')
-            case 'earth': 
-                return items.filter(item => item.element === 'earth')
-            default: 
-                return items
+        if (filter === 'all') {
+            return items
+        } else {
+            return items.filter(item => item.element === filter)
         }
     }
 
